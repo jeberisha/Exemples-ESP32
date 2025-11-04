@@ -1,15 +1,24 @@
 // Pin del LED
-const int LED = 2;
+const int LED = 2;      
 
 // Temps d'espera en mil·lisegons
 int espera = 1000;
 
 void setup() {
-// Configura el pin com a sortida
+  // Configura el pin com a sortida
   pinMode(LED, OUTPUT);
 }
 
 void loop() {
+  // Encén el LED
+  digitalWrite(LED, HIGH);
 
-  
+  // Espera 1 segon
+  delay(espera);
+
+  // Apaga el LED
+  digitalWrite(LED, LOW);
+
+  // Espera 1 segon
+  delay(espera);
 }
