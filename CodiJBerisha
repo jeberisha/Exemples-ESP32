@@ -1,0 +1,15 @@
+// Pin del LED
+const int LED = 2;
+
+// Temps d'espera en mil·lisegons
+int espera = 1000;
+
+void setup() {
+// Configura el pin com a sortida
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+
+  
+}
