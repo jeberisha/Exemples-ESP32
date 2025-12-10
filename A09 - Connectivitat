@@ -1,0 +1,59 @@
+#include <WiFi.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+#include "time.h"
+
+// Configuració WiFi
+const char* ssid     = "JesusBerisha";
+const char* password = "Admin1234!";
+
+// Configuració NTP
+const char* ntpServer = "pool.ntp.org";
+const long gmtOffset_sec = 3600;   // GMT+1 (Espanya)
+const int daylightOffset_sec = 3600; // Horari d’estiu
+
+// LCD I2C (adreça 0x27, 16 columnes, 2 files)
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+void setup() {
+  Serial.begin(115200);
+
+  // Inicialitzar LCD
+  lcd.init();
+  lcd.backlight();
+  lcd.setCursor(0,0);
+  lcd.print("Connectant WiFi");
+
+  // Connexió WiFi
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\nConnexio establerta!");
+  lcd.clear();
+  lcd.print("WiFi OK!");
+
+  // Configurar NTP
+  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+}
+
+void loop() {
+  struct tm timeinfo;
+  if(!getLocalTime(&timeinfo)){
+    Serial.println("Error obtenint hora");
+    return;
+  }
+
+  // Mostrar hora al Serial
+  Serial.println(&timeinfo, "%H:%M:%S");
+
+  // Mostrar hora al LCD
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Hora:");
+  lcd.setCursor(0,1);
+  lcd.print(&timeinfo, "%H:%M:%S");
+
+  delay(10000); // Actualitza cada 10s
+}
