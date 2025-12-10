@@ -1,8 +1,8 @@
 #include <WiFi.h>
 #include <WebServer.h>
 
-const char* ssid = "NOM_WIFI";
-const char* password = "CONTRASENYA_WIFI";
+const char* ssid = "JesusBerisha";
+const char* password = "Admin1234!";
 
 WebServer server(80);
 
@@ -52,7 +52,7 @@ void setup() {
   server.on("/", handleRoot);
   server.on("/on", handleOn);
   server.on("/off", handleOff);
-  server.on("/blink", handleBlink); // Nova funcionalitat
+  server.on("/blink", handleBlink); // Parpelleig
   server.begin();
 }
 
