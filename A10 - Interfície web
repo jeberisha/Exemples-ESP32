@@ -21,26 +21,15 @@ void handleRoot() {
 }
 
 void handleOn() {
-  digitalWrite(ledPin, HIGH);
-  ledState = true;
-  handleRoot();
+Serial.println("Led.ON");
 }
 
 void handleOff() {
-  digitalWrite(ledPin, LOW);
-  ledState = false;
-  handleRoot();
+Serial.println("Led.OFF");
 }
 
 void handleBlink() {
-  for (int i = 0; i < 5; i++) {
-    digitalWrite(ledPin, HIGH);
-    delay(300);
-    digitalWrite(ledPin, LOW);
-    delay(300);
-  }
-  ledState = false;
-  handleRoot();
+Serial.println("Led.BLINKING");
 }
 
 void setup() {
