@@ -1,70 +1,72 @@
 #include <WiFi.h>
 #include <WebServer.h>
 
-const char* ssid = "Jesus's iPhone";
-const char* password = "11111111";
+const char* ssid = "NOM_WIFI";
+const char* password = "CONTRASENYA_WIFI";
 
 WebServer server(80);
 
-const int ledPin = 18;
-bool ledState = false;
+const int ledPin = 2;
 
 void handleRoot() {
-  String html = "<h1>ESP32 Web Server</h1>";
-  html += "<p>LED state: ";
-  html += (ledState ? "ON" : "OFF");
-  html += "</p>";
-  html += "<a href=\"/on\"><button>Turn ON</button></a>";
-  html += "<a href=\"/off\"><button>Turn OFF</button></a>";
-  html += "<a href=\"/blink\"><button>Blink</button></a>";
+  String html = "<h1>Control LED ESP32</h1>";
+  html += "<button onclick=\"location.href='/on'\">ON</button>";
+  html += "<button onclick=\"location.href='/off'\">OFF</button>";
+  html += "<button onclick=\"location.href='/blink'\">BLINK</button>";
   server.send(200, "text/html", html);
 }
 
 void handleOn() {
-  digitalWrite(ledPin, HIGH);   
-  ledState = true;
-  Serial.println("Led.ON");
-  handleRoot();
+  digitalWrite(ledPin, HIGH);
+  Serial.println("LED encès des de la web");
+  server.send(200, "text/html", "LED ON");
 }
 
 void handleOff() {
-  digitalWrite(ledPin, LOW);    
-  ledState = false;
-  Serial.println("Led.OFF");
-  handleRoot();
+  digitalWrite(ledPin, LOW);
+  Serial.println("LED apagat des de la web");
+  server.send(200, "text/html", "LED OFF");
 }
 
 void handleBlink() {
-  Serial.println("Led.BLINKING");
+  Serial.println("Inici parpelleig LED");
   for (int i = 0; i < 5; i++) {
     digitalWrite(ledPin, HIGH);
     delay(300);
     digitalWrite(ledPin, LOW);
     delay(300);
+    Serial.print("Parpelleig nº ");
+    Serial.println(i+1);
   }
-  ledState = false;
-  handleRoot();
+  Serial.println("Fi parpelleig LED");
+  server.send(200, "text/html", "LED BLINK");
 }
 
 void setup() {
-  Serial.begin(115200);   
   pinMode(ledPin, OUTPUT);
+  Serial.begin(115200);   // 🔑 Inicialitza el Serial Monitor
+  Serial.println("Iniciant ESP32...");
 
   WiFi.begin(ssid, password);
-  Serial.print("Connecting to WiFi");
+  Serial.print("Connectant a la WiFi ");
+  Serial.println(ssid);
+
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
   }
-  Serial.println("\nWiFi connected!");
-  Serial.print("ESP32 IP address: ");
-  Serial.println(WiFi.localIP());   
+
+  Serial.println("\nWiFi connectada!");
+  Serial.print("IP del servidor web: ");
+  Serial.println(WiFi.localIP());
 
   server.on("/", handleRoot);
   server.on("/on", handleOn);
   server.on("/off", handleOff);
   server.on("/blink", handleBlink);
+
   server.begin();
+  Serial.println("Servidor web iniciat");
 }
 
 void loop() {
