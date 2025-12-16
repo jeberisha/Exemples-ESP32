@@ -3,6 +3,7 @@
 
 const char* ssid = "Jesus's iPhone";
 const char* password = "11111111";
+const char* serverName = "http://worldtimeapi.org/api/timezone/Europe/Madrid";
 
 WebServer server(80);
 
@@ -18,13 +19,13 @@ void handleRoot() {
 
 void handleOn() {
   digitalWrite(ledPin, HIGH);
-  Serial.println("LED encès des de la web");
+  Serial.println("LED encès.");
   server.send(200, "text/html", "LED ON");
 }
 
 void handleOff() {
   digitalWrite(ledPin, LOW);
-  Serial.println("LED apagat des de la web");
+  Serial.println("LED apagat.");
   server.send(200, "text/html", "LED OFF");
 }
 
@@ -35,7 +36,7 @@ void handleBlink() {
     delay(300);
     digitalWrite(ledPin, LOW);
     delay(300);
-    Serial.print("Parpelleig nº ");
+    Serial.print("Parpelleig: ");
     Serial.println(i+1);
   }
   Serial.println("Fi parpelleig LED");
