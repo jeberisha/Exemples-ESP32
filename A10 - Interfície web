@@ -45,7 +45,7 @@ void handleBlink() {
 
 void setup() {
   pinMode(ledPin, OUTPUT);
-  Serial.begin(115200);   // 🔑 Inicialitza el Serial Monitor
+  Serial.begin(115200); 
   Serial.println("Iniciant ESP32...");
 
   WiFi.begin(ssid, password);
